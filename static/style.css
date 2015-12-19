@@ -1,0 +1,10 @@
+
+body>header {
+  border-top: 6px solid #FF6600;
+  background: rgba(18, 32, 53, 1);
+  color: white;
+  padding: 10px;
+}
+body>header img {
+  height: 36px;
+}

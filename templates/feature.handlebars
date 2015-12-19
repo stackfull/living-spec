@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>{{name}}</title>
+
+    <link rel="stylesheet" href="{{asset 'foundation.css'}}" type="text/css"charset="utf-8">
+    <link rel="stylesheet" href="{{asset 'style.css'}}" type="text/css"charset="utf-8">
+  </head>
+  <body>
+
+    <header class="row">
+      <h1>Generated Acceptance Spec</h1>
+    </header>
+    <section class="row">
+      <h4 class="small-10 columns">{{name}}</h4>
+      <div class="small-2 columns">
+      {{#each tags}}
+        <span class="label">{{name}}</span>
+      {{/each}}
+      </div>
+      {{#if description}}
+      <p class="small-10 columns end">
+        {{description}}</p>
+      {{/if}}
+    </section>
+
+	<!-- Background -->
+
+    {{#if background}}
+    <hr/>
+    <section class="row background">
+      <header class="small-12 columns row">
+        <h5 class="subheader small-10 columns"><b>Background:</b> {{background.name}}</h5>
+        <div class="small-2 columns">
+        {{#each background.tags}}
+          <span class="label">{{name}}</span>
+        {{/each}}
+        </div>
+		{{#if background.description}}
+		<p class="small-10 columns end">{{background.description}}
+		{{/if}}
+      </header>
+
+      <section class="small-12 columns"> 
+        <ol class="no-bullet">
+        {{#each background.steps}} 
+          <li>{{keyword}} {{text}}
+        {{/each}}
+        </ol>
+      </section>
+
+    </section>
+    {{/if}}
+
+	<!-- Scenarios -->
+
+    <section class="row">
+    {{#each scenarioDefinitions}}
+      <hr/>
+      <section class="small-12 columns row">
+        <h5 class="small-10 columns">{{name}}</h5>
+        <div class="small-2 columns">
+        {{#each tags}}
+          <span class="label">{{name}}</span>
+        {{/each}}
+        </div>
+		{{#if description}}
+		<p class="small-10 columns end">{{description}}
+		{{/if}}
+
+        <section class="small-12 columns"> 
+          <ol class="no-bullet">
+          {{#each steps}} 
+          <li>{{keyword}} {{text}} {{#if argument}}
+            {{#if argument.rows}}
+              <table>
+                <tbody>
+                  {{#each argument.rows}}
+                  <tr>
+                    {{#each cells}}
+                    <td>{{value}}
+                    {{/each}}
+                  {{/each}}
+              </table>
+            {{/if}}
+            {{#if argument.content}}
+            <pre>{{argument.content}}</pre>
+            {{/if}}
+            {{/if}}
+          {{/each}}
+          </ol>
+        </section>
+		{{#each examples}}
+        <section class="small-12 columns"> 
+		  <h6 class="subheader small-10 columns">Example: {{name}}</h6>
+		  <div class="small-2 columns">
+		  {{#each tags}}
+			<span class="label">{{name}}</span>
+		  {{/each}}
+		  </div>
+		  {{#if description}}
+		  <p class="small-10 columns end">{{description}}
+		  {{/if}}
+          <div class="small-6 columns end">
+            <table>
+              <thead>
+                <tr>
+                {{#each tableHeader.cells}}
+                  <th>{{value}}
+                {{/each}}
+              <tbody>
+              {{#each tableBody}}
+                <tr>
+                {{#each cells}}
+                  <td>{{value}}
+                {{/each}}
+              {{/each}}
+            </table>
+          </div>
+        </section>
+		{{/each}}
+      </section>
+    {{/each}}
+    </section>
+    </div>
+
+  </body>
+  <script src="{{asset 'app.js'}}" type="text/javascript" charset="utf-8"></script> 
+</html>

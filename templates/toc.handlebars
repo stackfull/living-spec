@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>{{title}}</title>
+
+    <link rel="stylesheet" href="{{asset 'foundation.css'}}"
+          type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="{{asset 'style.css'}}"
+          type="text/css" charset="utf-8">
+    <style type="text/css">
+    .page, .page>div { height: 100%; }
+    .toc { 
+      background: #eee;
+      overflow-y: scroll;
+    }
+    .feature-content { display: none; }
+    .is-accordion-submenu-parent > a {
+      position: relative;
+    }
+    .is-accordion-submenu-parent > a::after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 0;
+      border: inset 6px;
+      border-color: #2199e8 transparent transparent;
+      border-top-style: solid;
+      position: absolute;
+      top: 50%;
+      margin-top: -4px;
+      right: 1rem;
+    }
+    .is-accordion-submenu-parent[aria-expanded='true'] > a::after {
+      -webkit-transform-origin: 50% 50%;
+      -ms-transform-origin: 50% 50%;
+      transform-origin: 50% 50%;
+      -webkit-transform: scaleY(-1);
+      -ms-transform: scaleY(-1);
+      transform: scaleY(-1);
+    }
+
+    </style>
+  </head>
+  <body>
+    <div class="row page">
+
+      <div class="small-12 medium-6 large-4 columns toc">
+
+        <div class="row small-12 columns">
+          <h1>{{title}}</h1>
+          <p class="text-right subheader">{{date}}</p>
+        </div>
+        <div class="row">
+
+          {{#*inline "feature"}}
+          <li><a href="#{{id}}" class="feature-link">{{name}}</a></li>
+          {{/inline}}
+
+          {{#*inline "toc"}}
+          <li>
+            <a href="#" class="subheader">{{name}}</a>
+            <ul class="vertical menu nested">
+              {{#each features}}
+                {{> feature}}
+              {{/each}}
+              {{#each groups}}
+                {{> toc}}
+              {{/each}}
+            </ul>
+          </li>
+          {{/inline}}
+
+          <ol class="vertical menu" data-accordion-menu>
+            {{#each features}}
+            {{> feature}}
+            {{/each}}
+            {{#each groups}}
+              {{> toc}}
+            {{/each}}
+          </ol>
+        </div>
+      </div>
+      
+      <div class="medium-6 large-8 columns main">
+        {{#*inline "group"}}
+          {{#each features}}
+            <div id="{{id}}" class="row small-12 columns feature-content">
+              <div class="row small-12 columns">
+                <div class="small-8 columns subheader">
+                  {{../path}}
+                </div>
+                <div class="small-4 columns text-right">
+                  {{#each tags}}
+                    <span class="label">{{name}}</span>
+                  {{/each}}
+                </div>
+              </div>
+              <h4 class="row small-12 columns">{{name}}</h4>
+              <div class="row">
+                {{#if description}}
+                <p class="small-10 columns end">{{description}}</p>
+                {{/if}}
+              </div>
+              <div class="row">
+                {{#each scenarioDefinitions}}
+                <hr/>
+                <div class="small-12 columns row">
+                  <p class="small-8 columns">{{name}}</p>
+                  <div class="small-4 columns text-right">
+                    {{#each tags}}
+                    <span class="label">{{name}}</span>
+                    {{/each}}
+                  </div>
+                  {{#if description}}
+                  <p class="small-10 columns end">{{description}}
+                  {{/if}}
+                </div>
+                {{/each}}
+              </div>
+            </div>
+          {{/each}}
+          {{#each groups}} {{> group}} {{/each}}
+        {{/inline}}
+        {{> group }}
+      </div>
+    </div>
+  </body>
+  <script src="{{asset 'jquery.min.js'}}" type="text/javascript" charset="utf-8"></script> 
+  <script src="{{asset 'foundation.js'}}" type="text/javascript" charset="utf-8"></script> 
+  <script src="{{asset 'toc.js'}}" type="text/javascript" charset="utf-8"></script> 
+</html>
+

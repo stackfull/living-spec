@@ -1,0 +1,17 @@
+{
+  "name": "living-spec",
+  "version": "0.0.2",
+  "description": "Produce living spec documents from cucumber (gherkin) specs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "findit": "^2.0.0",
+    "gherkin": "^3.1.2",
+    "handlebars": "^4.0.5",
+    "ncp": "^2.0.0"
+  }
+}

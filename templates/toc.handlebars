@@ -14,6 +14,8 @@
     .toc { 
       background: #eee;
       overflow-y: scroll;
+      position: fixed;
+      top: 0; left: 0; right: 0;
     }
     .feature-content { display: none; }
     .is-accordion-submenu-parent > a {
@@ -44,37 +46,80 @@
     </style>
   </head>
   <body>
+
+{{#*inline "featurelink"}}
+  <li><a href="#{{id}}" class="feature-link">{{name}}</a></li>
+{{/inline}}
+
+{{#*inline "toc"}}
+  <li>
+    <a href="#" class="subheader">{{name}}</a>
+    <ul class="vertical menu nested">
+      {{#each features}}
+        {{> featurelink}}
+      {{/each}}
+      {{#each groups}}
+        {{> toc}}
+      {{/each}}
+    </ul>
+  </li>
+{{/inline}}
+
+{{#*inline "tags"}}
+  <div class="small-4 columns text-right">
+    {{#each tags}}
+      <span class="label">{{name}}</span>
+    {{/each}}
+  </div>
+{{/inline}}
+
+{{#*inline "description"}}
+  {{#if description}}
+    <p class="small-10 columns end">{{description}}</p>
+  {{/if}}
+{{/inline}}
+
+{{#*inline "bodyrow"}}
+  <tr>
+    {{#each cells}}
+    <td>{{value}}
+    {{/each}}
+  </tr>
+{{/inline}}
+
+{{#*inline "steps"}}
+  <ol class="no-bullet">
+    {{#each steps}} 
+    <li>{{keyword}} {{text}} {{#if argument}}
+      {{#if argument.rows}}
+        <table>
+          <tbody>
+            {{#each argument.rows}}
+            {{> bodyrow}}
+            {{/each}}
+        </table>
+      {{/if}}
+      {{#if argument.content}}
+<pre>{{argument.content}}</pre>
+      {{/if}}
+      {{/if}}
+    {{/each}}
+  </ol>
+{{/inline}}
+
     <div class="row page">
 
-      <div class="small-12 medium-6 large-4 columns toc">
+      <div class="small-12 medium-5 large-4 columns toc hide-for-print">
 
-        <div class="row small-12 columns">
+        <div class="row small-12 columns title">
           <h1>{{title}}</h1>
           <p class="text-right subheader">{{date}}</p>
         </div>
         <div class="row">
 
-          {{#*inline "feature"}}
-          <li><a href="#{{id}}" class="feature-link">{{name}}</a></li>
-          {{/inline}}
-
-          {{#*inline "toc"}}
-          <li>
-            <a href="#" class="subheader">{{name}}</a>
-            <ul class="vertical menu nested">
-              {{#each features}}
-                {{> feature}}
-              {{/each}}
-              {{#each groups}}
-                {{> toc}}
-              {{/each}}
-            </ul>
-          </li>
-          {{/inline}}
-
           <ol class="vertical menu" data-accordion-menu>
             {{#each features}}
-            {{> feature}}
+              {{> featurelink}}
             {{/each}}
             {{#each groups}}
               {{> toc}}
@@ -82,48 +127,79 @@
           </ol>
         </div>
       </div>
-      
-      <div class="medium-6 large-8 columns main">
+
+      <div class="medium-7 large-8 columns main">
         {{#*inline "group"}}
           {{#each features}}
+
             <div id="{{id}}" class="row small-12 columns feature-content">
-              <div class="row small-12 columns">
+              <div class="row small-12 columns feature-meta">
                 <div class="small-8 columns subheader">
                   {{../path}}
                 </div>
-                <div class="small-4 columns text-right">
-                  {{#each tags}}
-                    <span class="label">{{name}}</span>
-                  {{/each}}
-                </div>
+                {{> tags}}
               </div>
-              <h4 class="row small-12 columns">{{name}}</h4>
+              <h2 class="row small-12 columns">{{name}}</h2>
               <div class="row">
-                {{#if description}}
-                <p class="small-10 columns end">{{description}}</p>
-                {{/if}}
+                {{> description}}
               </div>
+
+              {{#with background}}
+                <hr/>
+                <div class="row background">
+                  <div class="small-12 columns row">
+                    <h5 class="subheader small-8 columns">Background: {{name}}</h5>
+                    {{> tags}}
+                    {{> description}}
+                  </div>
+
+                  <div class="small-12 columns"> 
+                    {{> steps}}
+                  </div>
+                </div>
+              {{/with}}
+
               <div class="row">
                 {{#each scenarioDefinitions}}
-                <hr/>
-                <div class="small-12 columns row">
-                  <p class="small-8 columns">{{name}}</p>
-                  <div class="small-4 columns text-right">
-                    {{#each tags}}
-                    <span class="label">{{name}}</span>
-                    {{/each}}
+                  <hr/>
+                  <div class="small-12 columns row">
+                    <h5 class="small-8 columns">{{name}}</h5>
+                    {{> tags}}
+                    {{> description}}
                   </div>
-                  {{#if description}}
-                  <p class="small-10 columns end">{{description}}
-                  {{/if}}
-                </div>
+
+                  <div class="small-12 columns"> 
+                    {{> steps}}
+                  </div>
+
+                  {{#each examples}}
+                    <div class="small-12 columns"> 
+                      <h6 class="subheader small-8 columns">Example: {{name}}</h6>
+                      {{> tags}}
+                      {{> description}}
+                      <div class="small-6 columns end">
+                        <table>
+                          <thead>
+                            <tr>
+                            {{#each tableHeader.cells}}
+                              <th>{{value}}
+                            {{/each}}
+                          <tbody>
+                          {{#each tableBody}}
+                            {{> bodyrow}}
+                          {{/each}}
+                        </table>
+                      </div>
+                    </div>
+                  {{/each}}
                 {{/each}}
+
               </div>
             </div>
           {{/each}}
           {{#each groups}} {{> group}} {{/each}}
         {{/inline}}
-        {{> group }}
+        {{> group}}
       </div>
     </div>
   </body>

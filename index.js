@@ -97,13 +97,6 @@ function convert(src, dst) {
   }
 }
 
-//fs.watch(rootDir, function() {
-  //console.log('change');
-  //walk(rootDir);
-
-//});
-//console.log('watching %s', rootDir);
-
 const finder = findit(rootDir);
 
 finder.on('directory', function(dir, stat, stop) {
@@ -133,7 +126,7 @@ finder.on('end', function() {
   tpl.title = title;
   tpl.date = new Date().toDateString();
   const html = templates.toc(tpl);
-  fs.writeFile(path.join(outDir, 'toc.html'), html);
+  fs.writeFile(path.join(outDir, 'single-page.html'), html);
 });
 
 ncp(assetDir, path.join(outDir, 'static'));

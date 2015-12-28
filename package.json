@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Paul Thomas <paul@stackfull.com",
+  "repository" : "https://github.com/stackfull/living-spec.git",
   "license": "ISC",
   "dependencies": {
     "findit": "^2.0.0",

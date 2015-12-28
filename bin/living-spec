@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+'use strict';
+
+const path = require('path');
+const fs = require('fs');
+
+const yargs = require('yargs')
+  .usage("Usage: $0 [-t <templates-dir>] [-o <output-dir>] [-T <title>] [path-to-specs]")
+  .alias('t', 'templates')
+  .describe('t', 'Use alternate templates')
+  .alias('o', 'output')
+  .describe('o', 'Write spec to new location')
+  .alias('T', 'title')
+  .describe('T', 'Set the spec title')
+  .help('h')
+  .alias('h', 'help')
+  .demand(1)
+  .default('t', 'templates')
+  .default('o', 'living-spec')
+  .default('T', 'Specification')
+  .example('$0 -o ../docs ./specs')
+  .argv;
+
+const m = require('..');
+
+
+function handle(error) {
+  console.log('FAIL %s', error);
+}
+
+m.walk(yargs._[0], (error, toc) => {
+  if (error) {return handle(error);}
+  let ostatic = path.resolve(yargs.output, 'static');
+  let istatic = path.resolve(yargs.templates, 'static');
+  try{ fs.mkdirSync(yargs.output); } catch(e) {}
+  m.writeTheme(ostatic, istatic, (error) => {
+    if (error) {return handle(error);}
+    let ofile = path.resolve(yargs.output, 'single.html');
+    let ifile = path.resolve(yargs.templates, 'toc.handlebars');
+    let data = toc.templateData();
+    data.title = yargs.title;
+    data.date = new Date().toDateString();
+    m.writeSingleFile(ofile, data, ifile, (error) => {
+      if (error) {return handle(error);}
+    });
+  });
+});
+
+

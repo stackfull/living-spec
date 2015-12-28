@@ -1,6 +1,6 @@
 {
   "name": "living-spec",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Produce living spec documents from cucumber (gherkin) specs.",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,7 @@
     "findit": "^2.0.0",
     "gherkin": "^3.1.2",
     "handlebars": "^4.0.5",
-    "ncp": "^2.0.0"
+    "ncp": "^2.0.0",
+    "yargs": "^3.31.0"
   }
 }

@@ -9,6 +9,16 @@ $(document).ready(function($) {
     featureContent.hide();
     $($(this).attr('href')).show();
   });
+  $('.search-toggle').click(function() {
+    $('#toc').toggleClass('browsing').toggleClass('searching');
+  });
+  $('#search-box').on('input propertychange past', function() {
+    var search = this.value;
+    $('#search-list li').each(function() {
+      var el = $(this);
+      el.toggle(el.text().includes(search));
+    });
+  });
   var hash = window.location.hash;
   if (hash != '') {
     var item = $('[data-accordion-menu] [href="' + hash + '"]');

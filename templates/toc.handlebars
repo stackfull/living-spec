@@ -7,48 +7,28 @@
 
     <link rel="stylesheet" href="{{asset 'foundation.css'}}"
           type="text/css" charset="utf-8">
+    <link rel="stylesheet" href="{{asset 'foundation-icons.css'}}"
+          type="text/css" charset="utf-8">
     <link rel="stylesheet" href="{{asset 'style.css'}}"
           type="text/css" charset="utf-8">
-    <style type="text/css">
-    .page, .page>div { height: 100%; }
-    .toc { 
-      background: #eee;
-      overflow-y: scroll;
-      position: fixed;
-      top: 0; left: 0; right: 0;
-    }
-    .feature-content { display: none; }
-    .is-accordion-submenu-parent > a {
-      position: relative;
-    }
-    .is-accordion-submenu-parent > a::after {
-      content: '';
-      display: block;
-      width: 0;
-      height: 0;
-      border: inset 6px;
-      border-color: #2199e8 transparent transparent;
-      border-top-style: solid;
-      position: absolute;
-      top: 50%;
-      margin-top: -4px;
-      right: 1rem;
-    }
-    .is-accordion-submenu-parent[aria-expanded='true'] > a::after {
-      -webkit-transform-origin: 50% 50%;
-      -ms-transform-origin: 50% 50%;
-      transform-origin: 50% 50%;
-      -webkit-transform: scaleY(-1);
-      -ms-transform: scaleY(-1);
-      transform: scaleY(-1);
-    }
-
-    </style>
   </head>
   <body>
 
 {{#*inline "featurelink"}}
   <li><a href="#{{id}}" class="feature-link">{{name}}</a></li>
+{{/inline}}
+
+{{#*inline "flatFeaturelink"}}
+  <li><a href="#{{id}}" class="feature-link">{{path}} / {{name}}</a></li>
+{{/inline}}
+
+{{#*inline "flattenFeatures"}}
+  {{#each features}}
+    {{> flatFeaturelink path=../path}}
+  {{/each}}
+  {{#each groups}}
+    {{> flattenFeatures}}
+  {{/each}}
 {{/inline}}
 
 {{#*inline "toc"}}
@@ -109,13 +89,35 @@
 
     <div class="row page">
 
-      <div class="small-12 medium-5 large-4 columns toc hide-for-print">
+      <div id="toc" class="small-12 medium-5 large-4 columns row browsing hide-for-print">
 
-        <div class="row small-12 columns title">
-          <h1>{{title}}</h1>
-          <p class="text-right subheader">{{date}}</p>
+        <div class="small-12 columns title">
+          <h1 class="">{{title}}</h1>
         </div>
-        <div class="row">
+
+        <div class="small-12 columns browsing row">
+          <div class="small-6 columns">
+            <p class="subheader">{{date}}</p>
+          </div>
+          <div class="small-6 columns text-right">
+            <button type="button" class="small expand button search-toggle">
+              <i class="fi-magnifying-glass"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="small-12 columns searching">
+          <div class="input-group">
+            <input type="text" id="search-box" class="input-group-field" placeholder="Search..." />
+            <div class="input-group-button">
+              <button type="button" class="small expand button search-toggle">
+                <i class="fi-x"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="small-12 columns browsing row">
 
           <ol class="vertical menu" data-accordion-menu>
             {{#each features}}
@@ -125,6 +127,17 @@
               {{> toc}}
             {{/each}}
           </ol>
+        </div>
+
+        <div id="search-list" class="small-12 columns searching">
+          <ul class="no-bullet">
+            {{#each features}}
+              {{> flatFeaturelink}}
+            {{/each}}
+            {{#each groups}}
+              {{> flattenFeatures}}
+            {{/each}}
+          </ul>
         </div>
       </div>
 

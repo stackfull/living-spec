@@ -1,6 +1,6 @@
 {
   "name": "living-spec",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Produce living spec documents from cucumber (gherkin) specs.",
   "main": "index.js",
   "bin": "./bin/living-spec",
